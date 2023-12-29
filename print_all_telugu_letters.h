@@ -1,5 +1,6 @@
 #include <locale.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <wchar.h>
 
 unsigned int	all_telugu_vowels[] = {
@@ -81,7 +82,9 @@ unsigned int	all_telugu_additional_marks[] = {
 
 #define MAX_GUNINTHAM_LETTERS 16
 
-unsigned int	any_gunintham[MAX_GUNINTHAM_LETTERS][3] = {0};
+unsigned int	any_single_consonent_gunintham[MAX_GUNINTHAM_LETTERS][3] = {0};
+unsigned int	any_double_consonent_gunintham[MAX_GUNINTHAM_LETTERS][5] = {0};
+unsigned int	any_triple_consonent_gunintham[MAX_GUNINTHAM_LETTERS][7] = {0};
 
 void	display_telugu_vowels(void)
 {
@@ -113,25 +116,73 @@ void	display_telugu_additional_marks(void)
 	wprintf(L"\n");
 }
 
-void	display_gunintham(unsigned int consonent)
+void	display_single_consonent_gunintham(unsigned int consonent)
 {
 	unsigned int	i;
 
 	setlocale(LC_ALL, "");
 	for (i = 0; i < MAX_GUNINTHAM_LETTERS; i++)
-		any_gunintham[i][0] = consonent;
+		any_single_consonent_gunintham[i][0] = consonent;
 	for (i = 0; i < MAX_GUNINTHAM_LETTERS - 3; i++)
-		any_gunintham[i + 1][1] = all_telugu_additional_marks[i];
-	any_gunintham[14][1] = all_telugu_additional_marks[14];
-	any_gunintham[15][1] = all_telugu_additional_marks[15];
+		any_single_consonent_gunintham[i
+			+ 1][1] = all_telugu_additional_marks[i];
+	any_single_consonent_gunintham[14][1] = all_telugu_additional_marks[14];
+	any_single_consonent_gunintham[15][1] = all_telugu_additional_marks[15];
 	for (i = 0; i < MAX_GUNINTHAM_LETTERS; i++)
-		wprintf(L"%ls\t", any_gunintham[i]);
+		wprintf(L"%ls\t", any_single_consonent_gunintham[i]);
+	wprintf(L"\n");
+}
+
+void	display_double_consonent_gunintham(unsigned int consonent1,
+		unsigned int consonent2)
+{
+	unsigned int	i;
+
+	setlocale(LC_ALL, "");
+	for (i = 0; i < MAX_GUNINTHAM_LETTERS; i++)
+	{
+		any_double_consonent_gunintham[i][0] = consonent1;
+		any_double_consonent_gunintham[i][1] = all_telugu_additional_marks[13];
+		any_double_consonent_gunintham[i][2] = consonent2;
+	}
+	for (i = 0; i < MAX_GUNINTHAM_LETTERS - 3; i++)
+		any_double_consonent_gunintham[i
+			+ 1][3] = all_telugu_additional_marks[i];
+	any_double_consonent_gunintham[14][3] = all_telugu_additional_marks[14];
+	any_double_consonent_gunintham[15][3] = all_telugu_additional_marks[15];
+	for (i = 0; i < MAX_GUNINTHAM_LETTERS; i++)
+		wprintf(L"%ls\t", any_double_consonent_gunintham[i]);
+	wprintf(L"\n");
+}
+
+void	display_trible_consonent_gunintham(unsigned int consonent1,
+		unsigned int consonent2, unsigned int consonent3)
+{
+	unsigned int	i;
+
+	setlocale(LC_ALL, "");
+	for (i = 0; i < MAX_GUNINTHAM_LETTERS; i++)
+	{
+		any_triple_consonent_gunintham[i][0] = consonent1;
+		any_triple_consonent_gunintham[i][1] = all_telugu_additional_marks[13];
+		any_triple_consonent_gunintham[i][2] = consonent2;
+		any_triple_consonent_gunintham[i][3] = all_telugu_additional_marks[13];
+		any_triple_consonent_gunintham[i][4] = consonent3;
+	}
+	for (i = 0; i < MAX_GUNINTHAM_LETTERS - 3; i++)
+		any_triple_consonent_gunintham[i
+			+ 1][5] = all_telugu_additional_marks[i];
+	any_triple_consonent_gunintham[14][5] = all_telugu_additional_marks[14];
+	any_triple_consonent_gunintham[15][5] = all_telugu_additional_marks[15];
+	for (i = 0; i < MAX_GUNINTHAM_LETTERS; i++)
+		wprintf(L"%ls\t", any_triple_consonent_gunintham[i]);
 	wprintf(L"\n");
 }
 
 void	display_double_consonants(void)
 {
 	unsigned int i, j, consonent[4] = {0};
+	setlocale(LC_ALL, "");
 	for (i = 0; all_telugu_consonants[i] != 0; i++)
 	{
 		for (j = 0; all_telugu_consonants[j] != 0; j++)
@@ -148,6 +199,7 @@ void	display_double_consonants(void)
 void	display_triple_consonants(void)
 {
 	unsigned int i, j, k, consonent[6] = {0};
+	setlocale(LC_ALL, "");
 	for (i = 0; all_telugu_consonants[i] != 0; i++)
 	{
 		for (j = 0; all_telugu_consonants[j] != 0; j++)
@@ -159,6 +211,60 @@ void	display_triple_consonants(void)
 				consonent[2] = all_telugu_consonants[j];
 				consonent[3] = all_telugu_additional_marks[13];
 				consonent[4] = all_telugu_consonants[k];
+				wprintf(L"%ls\t", consonent);
+			}
+		}
+		wprintf(L"\n");
+	}
+}
+
+void	display_root_of_telugu_consonents(void)
+{
+	unsigned int	i,consonent[3]={0};
+
+	setlocale(LC_ALL, "");
+	for (i = 0; all_telugu_consonants[i] != 0; i++) {
+		consonent[0] = all_telugu_consonants[i];
+        consonent[1] = all_telugu_additional_marks[13];
+        wprintf(L"%ls\t", consonent);
+	}
+	wprintf(L"\n");
+}
+
+void	display_root_of_double_consonants(void)
+{
+	unsigned int i, j, consonent[5] = {0};
+	setlocale(LC_ALL, "");
+	for (i = 0; all_telugu_consonants[i] != 0; i++)
+	{
+		for (j = 0; all_telugu_consonants[j] != 0; j++)
+		{
+			consonent[0] = all_telugu_consonants[i];
+			consonent[1] = all_telugu_additional_marks[13];
+			consonent[2] = all_telugu_consonants[j];
+			consonent[3] = all_telugu_additional_marks[13];
+			wprintf(L"%ls\t", consonent);
+		}
+		wprintf(L"\n");
+	}
+}
+
+void	display_root_of_triple_consonants(void)
+{
+	unsigned int i, j, k, consonent[7] = {0};
+	setlocale(LC_ALL, "");
+	for (i = 0; all_telugu_consonants[i] != 0; i++)
+	{
+		for (j = 0; all_telugu_consonants[j] != 0; j++)
+		{
+			for (k = 0; all_telugu_consonants[k] != 0; k++)
+			{
+				consonent[0] = all_telugu_consonants[i];
+				consonent[1] = all_telugu_additional_marks[13];
+				consonent[2] = all_telugu_consonants[j];
+				consonent[3] = all_telugu_additional_marks[13];
+				consonent[4] = all_telugu_consonants[k];
+				consonent[5] = all_telugu_additional_marks[13];
 				wprintf(L"%ls\t", consonent);
 			}
 		}
@@ -214,7 +320,7 @@ void	display_triple_consonants(void)
 // 	wprintf(L"\n");
 // }
 
-// void	display_gunintham(unsigned int consonent)
+// void	display_single_consonent_gunintham(unsigned int consonent)
 // {
 // 	unsigned int i = 0x0C3D, sound[3] = {0};
 
